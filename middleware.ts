@@ -9,8 +9,16 @@ const isProtectedRoute = createRouteMatcher([
   "/reviews(.*)",
 ]);
 
+// export default clerkMiddleware((auth, req) => {
+//   if (isProtectedRoute(req)) auth().protect();
+// });
 export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) auth().protect();
+  try {
+    if (isProtectedRoute(req)) auth().protect();
+  } catch (error) {
+    console.error("Authentication error:", error);
+    throw new Error("Authentication failed.");
+  }
 });
 
 export const config = {
